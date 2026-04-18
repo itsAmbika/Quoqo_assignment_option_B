@@ -1,36 +1,25 @@
-const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth');
-const userModel = require('../models/userModel');
+const authService = require('../services/authService');
+const { ALERT_MESSAGES, ROUTES, VIEW_TITLES } = require('../constants/appConstants');
 
 exports.renderLogin = (req, res) => {
-  res.render('login', { title: 'Login' });
+  res.render('login', { title: VIEW_TITLES.login });
 };
 
 exports.login = async (req, res) => {
-  const email = req.body.email?.trim().toLowerCase() || '';
-  const password = req.body.password || '';
-  const user = await userModel.findByEmail(email);
+  const { email, user } = await authService.authenticateUser(req.body);
 
-  if (user && await bcrypt.compare(password, user.password)) {
+  if (user) {
     auth.loginUser(req, user);
 
-    const returnTo = req.session.returnTo || '/requests';
+    const returnTo = req.session.returnTo || ROUTES.requests;
     delete req.session.returnTo;
-
-    return req.session.save((err) => {
-      if (err) {
-        return res.status(500).render('error', {
-          title: 'Error',
-          error: 'Unable to start your session'
-        });
-      }
-
-      res.redirect(returnTo);
-    });
+    await authService.saveSession(req);
+    return res.redirect(returnTo);
   }
 
-  res.locals.alerts.error.push('Invalid email/password');
-  res.status(401).render('login', { title: 'Login', formData: { email } });
+  res.locals.alerts.error.push(ALERT_MESSAGES.invalidCredentials);
+  res.status(401).render('login', { title: VIEW_TITLES.login, formData: { email } });
 };
 
 exports.logout = (req, res) => {

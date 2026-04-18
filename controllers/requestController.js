@@ -1,56 +1,41 @@
-const ExpressError = require('../utils/ExpressError');
 const requestModel = require('../models/requestModel');
-const userModel = require('../models/userModel');
-
-const REQUEST_STATUSES = ['pending', 'in_review', 'approved', 'rejected', 'completed'];
+const requestService = require('../services/requestService');
+const { ROUTES, VIEW_TITLES } = require('../constants/appConstants');
 
 exports.listRequests = async (req, res) => {
   const requests = await requestModel.findAllWithUsers();
 
   res.render('requests', {
-    title: 'Workflow Requests',
+    title: VIEW_TITLES.requests,
     requests,
   });
 };
 
 exports.renderNewForm = async (req, res) => {
-  const users = await userModel.findAllBasic();
+  const { users } = await requestService.getRequestFormData();
 
   res.render('new', {
-    title: 'New Request',
+    title: VIEW_TITLES.newRequest,
     users,
   });
 };
 
 exports.createRequest = async (req, res) => {
   const { title, description, userId } = req.body;
-
-  if (!title || !userId) {
-    throw new ExpressError(400, 'Title and user are required');
-  }
-
-  const userExists = await userModel.existsById(userId);
-  if (!userExists) {
-    throw new ExpressError(400, 'Selected user does not exist');
-  }
-
+  await requestService.validateRequestInput({ title, userId });
   await requestModel.create({ title, description, userId });
-  res.redirect('/requests');
+  res.redirect(ROUTES.requests);
 };
 
 exports.renderEditForm = async (req, res) => {
-  const request = await requestModel.findById(req.params.id);
-  if (!request) {
-    throw new ExpressError(404, 'Request not found');
-  }
-
-  const users = await userModel.findAllBasic();
+  const request = await requestService.getRequestByIdOrFail(req.params.id);
+  const { users, statuses } = await requestService.getRequestFormData();
 
   res.render('edit', {
-    title: 'Edit Request',
+    title: VIEW_TITLES.editRequest,
     request,
     users,
-    statuses: REQUEST_STATUSES,
+    statuses,
   });
 };
 
@@ -64,10 +49,10 @@ exports.updateRequest = async (req, res) => {
     userId,
   });
 
-  res.redirect('/requests');
+  res.redirect(ROUTES.requests);
 };
 
 exports.deleteRequest = async (req, res) => {
   await requestModel.deleteById(req.params.id);
-  res.redirect('/requests');
+  res.redirect(ROUTES.requests);
 };

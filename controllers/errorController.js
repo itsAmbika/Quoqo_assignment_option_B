@@ -1,10 +1,11 @@
 const ExpressError = require('../utils/ExpressError');
+const { ALERT_MESSAGES, VIEW_TITLES } = require('../constants/appConstants');
 
 exports.handleError = (err, req, res, next) => {
   console.error('Server Error:', err);
 
   let status = 500;
-  let message = process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message;
+  let message = process.env.NODE_ENV === 'production' ? ALERT_MESSAGES.internalServerError : err.message;
 
   if (err instanceof ExpressError) {
     status = err.status;
@@ -15,5 +16,5 @@ exports.handleError = (err, req, res, next) => {
   res.locals.alerts.error = res.locals.alerts.error || [];
   res.locals.alerts.error.push(message);
 
-  res.status(status).render('error', { title: 'Error', error: message });
+  res.status(status).render('error', { title: VIEW_TITLES.error, error: message });
 };

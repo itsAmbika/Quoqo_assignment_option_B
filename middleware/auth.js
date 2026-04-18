@@ -1,9 +1,10 @@
 const ExpressError = require('../utils/ExpressError');
+const { ROUTES } = require('../constants/appConstants');
 
 exports.isLoggedIn = (req, res, next) => {
   if (!req.session.userId) {
     req.session.returnTo = req.originalUrl;
-    return res.redirect('/login');
+    return res.redirect(ROUTES.login);
   }
 
   next();
@@ -29,10 +30,10 @@ exports.logoutUser = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error('Logout error:', err);
-      return res.redirect('/requests');
+      return res.redirect(ROUTES.requests);
     }
 
     res.clearCookie('connect.sid');
-    res.redirect('/requests');
+    res.redirect(ROUTES.requests);
   });
 };
