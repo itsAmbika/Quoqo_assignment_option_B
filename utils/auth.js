@@ -32,9 +32,14 @@ exports.loginUser = (user) => (req) => {
 };
 
 // logoutUser: Clear session
-exports.logoutUser = (req) => {
+exports.logoutUser = (req, res) => {
   req.session.destroy((err) => {
-    if (err) console.error('Logout error:', err);
+    if (err) {
+      console.error('Logout error:', err);
+      return res.redirect('/requests');
+    }
+    res.clearCookie('connect.sid');
+    res.redirect('/requests');
   });
 };
 
