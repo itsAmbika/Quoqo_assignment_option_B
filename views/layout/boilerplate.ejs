@@ -8,7 +8,31 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <main>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/requests">Workflow Requests</a>
+      <ul class="navbar-nav ms-auto">
+        <% if (typeof locals.session !== 'undefined' && locals.session && locals.session.userId) { %>
+          <li class="nav-item">
+            <span class="nav-link">Hi, <%= locals.session.userEmail %> (<%= locals.session.userRole %>)</span>
+          </li>
+          <li class="nav-item">
+            <form method="POST" action="/logout" style="display: inline;">
+              <button type="submit" class="nav-link btn btn-outline-light btn-sm">Logout</button>
+            </form>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+  <main class="container mt-4">
+    <% if (typeof locals.alerts !== 'undefined' && locals.alerts && locals.alerts.error && locals.alerts.error.length > 0) { %>
+      <%- include('partials/alert') %>
+    <% } %>
     <%- body %>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
