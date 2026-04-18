@@ -416,15 +416,3 @@ Suggested improvement areas:
 - add a development script such as `npm run dev`
 - improve styling consistency across all pages
 
-## Notes for Evaluators
-
-This project was intentionally organized for code quality and maintainability:
-
-- MVC-inspired separation of concerns
-- route aggregation through a central router module
-- services layer for business logic
-- centralized constants for repeated values
-- middleware-based auth and locals handling
-- modular startup with separate `app.js` and `server.js`
-
-This keeps the code easier to read, reason about, and extend while preserving the original application behavior.
