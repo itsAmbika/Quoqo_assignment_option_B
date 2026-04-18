@@ -407,12 +407,5 @@ If you want to improve the project:
 4. Test the application locally
 5. Open a pull request
 
-Suggested improvement areas:
 
-- add automated tests
-- add flash-message middleware
-- improve authorization-based UI hiding for actions
-- add request ownership rules
-- add a development script such as `npm run dev`
-- improve styling consistency across all pages
 
