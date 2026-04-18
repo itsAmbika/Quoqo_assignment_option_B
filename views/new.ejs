@@ -1,32 +1,38 @@
-<% layout('layout/boilerplate') %>
+<%- layout('layout/boilerplate') -%>
 
 <div class="page-header">
   <h1>New Request</h1>
-  <a href="/requests" class="button secondary">Back to Requests</a>
+  <a href="/requests" class="button secondary">← Back to Requests</a>
 </div>
 
-<form method="POST" action="/requests" class="form needs-validation" novalidate>
-  <div class="mb-3">
-    <label for="title" class="form-label">Title</label>
-    <input type="text" id="title" name="title" class="form-control" required>
-    <div class="invalid-feedback">Please enter a request title.</div>
-  </div>
+<%- include('partials/alert') %>
 
-  <div class="mb-3">
-    <label for="description" class="form-label">Description</label>
-    <textarea id="description" name="description" rows="5" class="form-control"></textarea>
+<form method="POST" action="/requests" class="form">
+  <div class="form-group">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required value="<%= locals.title || '' %>">
   </div>
-
-  <div class="mb-3">
-    <label for="userId" class="form-label">Created By</label>
-    <select id="userId" name="userId" class="form-select" required>
-      <option value="">Select a user</option>
-      <% users.forEach((user) => { %>
-        <option value="<%= user.id %>"><%= user.name %> (<%= user.role %>)</option>
+  
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="5"><%= locals.description || '' %></textarea>
+  </div>
+  
+  <div class="form-group">
+    <label for="userId">Assign to:</label>
+    <select id="userId" name="userId" required>
+      <option value="">Select User</option>
+      <% users.forEach(user => { %>
+        <option value="<%= user.id %>" <%= locals.userId == user.id ? 'selected' : '' %>>
+          <%= user.name %> (<%= user.role %>)
+        </option>
       <% }) %>
     </select>
-    <div class="invalid-feedback">Please select a user.</div>
   </div>
-
-  <button type="submit" class="button">Create Request</button>
+  
+  <div class="form-actions">
+    <button type="submit" class="button primary">Create Request</button>
+    <a href="/requests" class="button secondary">Cancel</a>
+  </div>
 </form>
+
