@@ -1,0 +1,30 @@
+<% layout('layout/boilerplate') %>
+
+<h1>Workflow Requests</h1>
+
+<% if (requests.length === 0) { %>
+  <p class="empty">No requests found.</p>
+<% } else { %>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created By</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% requests.forEach((request) => { %>
+        <tr>
+          <td><%= request.title %></td>
+          <td><%= request.description || 'No description' %></td>
+          <td><span class="status"><%= request.status %></span></td>
+          <td><%= request.createdBy %><br><%= request.userEmail %></td>
+          <td><%= request.userRole %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
