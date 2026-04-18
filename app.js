@@ -155,6 +155,18 @@ app.post('/requests/:id/edit', async (req, res) => {
   }
 });
 
+// delete a request
+app.post('/requests/:id/delete', async (req, res) => {
+  try {
+    await db.query('DELETE FROM requests WHERE id = ?', [req.params.id]);
+
+    res.redirect('/requests');
+  } catch (error) {
+    console.error('Error deleting request:', error);
+    res.status(500).send('Unable to delete request');
+  }
+});
+
 
 
 app.listen(port, () => {

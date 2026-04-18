@@ -46,6 +46,21 @@ h1 {
   color: #174ea6;
 }
 
+.button.danger {
+  border-color: #b42318;
+  background: #b42318;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actions form {
+  margin: 0;
+}
+
 .form {
   max-width: 640px;
   padding: 24px;

@@ -28,7 +28,12 @@
           <td><%= request.createdBy %><br><%= request.userEmail %></td>
           <td><%= request.userRole %></td>
           <td>
-            <a href="/requests/<%= request.id %>/edit" class="button secondary">Edit</a>
+            <div class="actions">
+              <a href="/requests/<%= request.id %>/edit" class="button secondary">Edit</a>
+              <form method="POST" action="/requests/<%= request.id %>/delete">
+                <button type="submit" class="button danger">Delete</button>
+              </form>
+            </div>
           </td>
         </tr>
       <% }) %>
