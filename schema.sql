@@ -12,7 +12,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE requests (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id VARCHAR(36) PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   description TEXT,
   status ENUM('pending', 'in_review', 'approved', 'rejected', 'completed') NOT NULL DEFAULT 'pending',
@@ -21,5 +21,4 @@ CREATE TABLE requests (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
-
 

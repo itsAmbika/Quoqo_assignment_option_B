@@ -12,8 +12,67 @@ main {
 }
 
 h1 {
-  margin-bottom: 24px;
+  margin: 0 0 24px;
   font-size: 32px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin-bottom: 0;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid #174ea6;
+  border-radius: 4px;
+  background: #174ea6;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button.secondary {
+  background: #ffffff;
+  color: #174ea6;
+}
+
+.form {
+  max-width: 640px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e0ea;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.form input,
+.form textarea,
+.form select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+  padding: 10px 12px;
+  border: 1px solid #c5cfdd;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.form textarea {
+  resize: vertical;
 }
 
 table {

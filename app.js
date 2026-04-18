@@ -3,6 +3,7 @@ require('dotenv').config();
 const mysql = require('mysql2/promise');
 const path = require('path');
 const ejsMate = require('ejs-mate');
+const { randomUUID } = require('crypto');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,6 +26,55 @@ const db = mysql.createPool({
 app.get('/', (req, res) => {
   res.redirect('/requests');
 });
+
+// form to create a new request
+app.get('/requests/new', async (req, res) => {
+  try {
+    const [users] = await db.query(`
+      SELECT id, name, role
+      FROM users
+      ORDER BY name
+    `);
+
+    res.render('new', {
+      title: 'New Request',
+      users,
+    });
+  } catch (error) {
+    console.error('Error loading new request form:', error);
+    res.status(500).send('Unable to load request form');
+  }
+});
+
+// create a new request
+app.post('/requests', async (req, res) => {
+  const { title, description, userId } = req.body;
+
+  if (!title || !userId) {
+    return res.status(400).send('Title and user are required');
+  }
+
+  try {
+    const [users] = await db.query('SELECT id FROM users WHERE id = ?', [userId]);
+
+    if (users.length === 0) {
+      return res.status(400).send('Selected user does not exist');
+    }
+
+    const requestId = randomUUID();
+
+    await db.query(
+      'INSERT INTO requests (id, title, description, userId) VALUES (?, ?, ?, ?)',
+      [requestId, title.trim(), description?.trim() || null, userId]
+    );
+
+    res.redirect('/requests');
+  } catch (error) {
+    console.error('Error creating request:', error);
+    res.status(500).send('Unable to create request');
+  }
+});
+
 // read all requests
 app.get('/requests', async (req, res) => {
   try {
@@ -51,6 +101,57 @@ app.get('/requests', async (req, res) => {
   } catch (error) {
     console.error('Error fetching requests:', error);
     res.status(500).send('Unable to load requests');
+  }
+});
+
+// form to edit a request
+app.get('/requests/:id/edit', async (req, res) => {
+  try {
+    const [[request]] = await db.query(
+      'SELECT id, title, description, status, userId FROM requests WHERE id = ?',
+      [req.params.id]
+    );
+
+    if (!request) {
+      return res.status(404).send('Request not found');
+    }
+
+    const [users] = await db.query(`
+      SELECT id, name, role
+      FROM users
+      ORDER BY name
+    `);
+
+    res.render('edit', {
+      title: 'Edit Request',
+      request,
+      users,
+      statuses: ['pending', 'in_review', 'approved', 'rejected', 'completed'],
+    });
+  } catch (error) {
+    console.error('Error loading edit request form:', error);
+    res.status(500).send('Unable to load edit request form');
+  }
+});
+
+// update a request
+app.post('/requests/:id/edit', async (req, res) => {
+  const { title, description, status, userId } = req.body;
+
+  try {
+    await db.query(
+      `
+        UPDATE requests
+        SET title = ?, description = ?, status = ?, userId = ?
+        WHERE id = ?
+      `,
+      [title.trim(), description?.trim() || null, status, userId, req.params.id]
+    );
+
+    res.redirect('/requests');
+  } catch (error) {
+    console.error('Error updating request:', error);
+    res.status(500).send('Unable to update request');
   }
 });
 
