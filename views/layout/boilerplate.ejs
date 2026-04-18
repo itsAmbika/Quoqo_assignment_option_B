@@ -12,9 +12,9 @@
     <div class="container">
       <a class="navbar-brand" href="/requests">Workflow Requests</a>
       <ul class="navbar-nav ms-auto">
-        <% if (typeof locals.session !== 'undefined' && locals.session && locals.session.userId) { %>
+        <% if (typeof session !== 'undefined' && session && session.userId) { %>
           <li class="nav-item">
-            <span class="nav-link">Hi, <%= locals.session.userEmail %> (<%= locals.session.userRole %>)</span>
+            <span class="nav-link">Hi, <%= session.userEmail %> (<%= session.userRole %>)</span>
           </li>
           <li class="nav-item">
             <form method="POST" action="/logout" style="display: inline;">
@@ -22,6 +22,9 @@
             </form>
           </li>
         <% } else { %>
+
+
+
           <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
@@ -30,8 +33,8 @@
     </div>
   </nav>
   <main class="container mt-4">
-    <% if (typeof locals.alerts !== 'undefined' && locals.alerts && locals.alerts.error && locals.alerts.error.length > 0) { %>
-      <%- include('partials/alert') %>
+    <% if (typeof alerts !== 'undefined' && alerts && alerts.error && alerts.error.length > 0) { %>
+      <%- include('../partials/alert') %>
     <% } %>
     <%- body %>
   </main>

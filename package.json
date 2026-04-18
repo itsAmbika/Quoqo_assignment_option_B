@@ -10,7 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^2.2.2",
     "dotenv": "^17.4.2",
     "ejs": "^5.0.2",
@@ -20,4 +20,5 @@
     "mysql2": "^3.22.1",
     "uuid": "^13.0.0"
   }
+
 }
