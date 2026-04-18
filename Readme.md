@@ -8,19 +8,22 @@ Add screenshots here before submission.
 
 ### Login Page
 
-`[Insert screenshot here]`
+ ![login](assets/login.png)
 
 ### Requests Listing
 
-`[Insert screenshot here]`
+ ![Home](assets/homepage.png)
+
 
 ### New Request Form
 
-`[Insert screenshot here]`
+ ![create](assets/createpage.png)
+
 
 ### Edit Request Form
 
-`[Insert screenshot here]`
+ ![edit](assets/editpage.png)
+
 
 ## Overview
 
