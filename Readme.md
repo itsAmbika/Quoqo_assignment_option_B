@@ -4,8 +4,6 @@ A modular Node.js and Express application for managing workflow requests with se
 
 ## Screenshots
 
-Add screenshots here before submission.
-
 ### Login Page
 
  ![login](assets/login.png)
