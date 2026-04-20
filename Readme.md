@@ -1,4 +1,4 @@
-# Workflow Requests App
+# Workflow Requests 
 
 A modular Node.js and Express application for managing workflow requests with session-based authentication, role-based authorization, MySQL persistence, EJS views, and Bootstrap-powered client-side validation.
 
